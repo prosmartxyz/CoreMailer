@@ -1,58 +1,98 @@
-# CoreMailer
+# CoreMailer for NET Core 3.1 and above
 
-Send email from .NET Core 2.0 with razor template Check the exmple code for details :) happy coding
+Based on [Riyasat CoreMailer](https://www.nuget.org/packages/CoreMailer) project, this package is meant to work with NET Core 3.1 LTS and above. Send emails from dynamic templates made with Razor. 
 
-How to Use:
+**IMPORTANT** If you are using NET Core 3.1 and above **you must** configure your `Startup.cs` services to work with **controllers & views**, specially if the project was bootstraped to be a Razor Web App. Here we are using controllers & views to generate email views. More instructions below.
 
-**To Install**
 
-    npm install CoreMailer -Version 1.0.0
+## How to Use
 
-**In Startup.cs add**
+### Installation
+
+Add package reference to your project `.csproj` file. For more installation methods refer to the package NuGet site.
+
+    <PackageReference Include="prosmart.CoreMailer" Version="1.0.0" />
+
+### Usage
+
+**In Startup.cs, ConfigureServices**
+
+`TemplateRenderer` & `CoreMvcmailer` services must be cregistered as scoped services.
+
+**REMEMBER** as per docs of NET Core 3.x, [MVC Registration](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.1&tabs=visual-studio#mvc-service-registration) had some changes. If you are using a Razor Page project or WebAPI-only **you must register controllers & views** in order to use this package. So, the final service registration section would be like this:
 
     services.AddScoped<ITemplateRenderer, TemplateRenderer>();
     services.AddScoped<ICoreMvcMailer, CoreMvcMailer>();
+    services.AddControllersWithViews();
 
-Create cshtml template under any views folder e.g.
+You can use this MVC Registration alongside Razor Pages, read the docs provided to understand these changes.
+
+Then, register routes to this controllers in Startup Configure section.
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+    });
+
+This is pretty straightforward and basic configuration for **controllers**, you can change this configuration as you need. Official docs are available [here](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.1&tabs=visual-studio#migrate-startupconfigure).
+
+
+**In your Views folder**
+
+Create a `cshtml` template under any views folder e.g.
 
     Views/Emails/Registration.cshtml
 
-**The content of cshtml can be**
+This template will be associated to a model so we can change values dynamically.
 
-    @model UserInfo
-    Hello <strong>@Model.UserName</strong> you are <strong>Awxam</strong>
+**The content of `cshtml` can be**
 
-**NOTE: For emails you have to use inline styling.**
+    @model UserRegistrationInfo
+    Hello <strong>@Model.UserName</strong> your email is <strong>@Model.Email</strong>
 
-in the controller use following:
+**NOTE: For emails you have to use inline styling.** This means that all CSS values must be inlined in your view file (or any HTML of some sort). For this task you can use [Foundation for Emails](https://foundation.zurb.com/emails/email-templates.html) or any web-based editor.
+
+### Usage in Controllers
+Emails must be _send_ inside a controller action, plain old MVC. Our mailer service is properly registered in our `Startup.cs` so we can use built-in DI in any controller constructor like this:
 
 **Constructor**
 
     private readonly ICoreMvcMailer _mailer;
+
     public HomeController(ICoreMvcMailer mailer)
     {
       _mailer = mailer;
     }
 
-**ActionMethod**
+**In ActionMethod**
+Now you can send emails inside any action, in this example we use the `SencAsync` method:
 
-    public IActionResult About()
+    [AllowAnonymous]
+    [HttpGet("users/notify")]
+    public async Task<IActionResult> NotifyUser(string username, string email)
+    {
+        UserRegistrationInfo newUser = new UserRegistrationInfo()
         {
-            MailerModel mdl = new MailerModel("YourHostName",1234)
-            {
-                FromAddress = "Your Address",
-                IsHtml = true,
-                User = "YourUserName",
-                Key ="YourKey",
-                ViewFile = "Emails/Register",
-                Subject = "Registration",
-                Model = new // Your actual class model
-                {
-                }
-            };
+            UserName = username,
+            Email = email 
+        };
+
+        MailerModel notifier = new MailerModel("YourHostName",1234)
+        {
+            FromAddress = "Your Address",
+            IsHtml = true,
+            User = "YourUserName",
+            Key ="YourKey",
+            ViewFile = "Emails/Register",
+            Subject = "Registration",
+            Model = newUser
+        };
             
-            _mailer.Send(mdl);
-            return View();
+        await _mailer.SendAsync(notifier);
+        return View();
+    }
         
 
 **UPDATE 2018-01-04**
@@ -63,7 +103,7 @@ Added support to use local folder instead of using paid or free mail servers.
 
 It is really simple to use. Just create MVCMailer model with **pickup directory location**. When you send the email make sure you set sender and reciver email. Once done, you can see email in your provided pickup directory.
 
-            MailerModel mdl = new MailerModel(**"Your Directory Here"**)
+            MailerModel notifier = new MailerModel(**"Your Directory Here"**)
             {
                 FromAddress = "Your Address",
                 IsHtml = true,
@@ -71,11 +111,9 @@ It is really simple to use. Just create MVCMailer model with **pickup directory 
                 Key ="YourKey",
                 ViewFile = "Emails/Register",
                 Subject = "Registration",
-                Model = new // Your actual class model
-                {
-                }
+                Model = newUser
             };
-            mdl.ToAddresses.Add("test@test.com");
+            notifier.ToAddresses.Add("test@test.com");
             _mailer.Send(mdl);
 
 **LICENSE**

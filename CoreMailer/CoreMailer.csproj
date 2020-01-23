@@ -2,13 +2,19 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.1.4</Version>
-    <Authors>Riyasat</Authors>
-    <Company>Riy Technologies</Company>
-    <PackageProjectUrl>https://github.com/riyasat/CoreMailer</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/riyasat/CoreMailer</RepositoryUrl>
+    <Version>1.0.0</Version>
+    <Authors>prosmartxyz, Daniel Díaz</Authors>
+    <Company>Prosmart</Company>
+    <PackageProjectUrl>https://github.com/prosmartxyz/CoreMailer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/prosmartxyz/CoreMailer</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.1.4.0</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <PackageId>Prosmart.CoreMailer</PackageId>
+    <Product>Prosmart.CoreMailer</Product>
+    <Description>Send Emails from .NET Core 3.1 or Above With Razor View Templates</Description>
+    <Copyright>Prosmart 2020</Copyright>
+    <PackageTags>ASPNET.Core Mailer MVC mailer mailer .NETCoreMailer EmailSender prosmartxyz</PackageTags>
+    <PackageReleaseNotes>Based on Riyasat CoreMailer, this project send emails from within ASPNET.Core 3.1 or above with razor templates.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

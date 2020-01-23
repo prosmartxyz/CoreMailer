@@ -26,7 +26,6 @@ namespace CoreMailerExample
             }
             
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
