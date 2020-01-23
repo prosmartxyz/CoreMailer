@@ -11,7 +11,7 @@ Based on [Riyasat CoreMailer](https://www.nuget.org/packages/CoreMailer) project
 
 Add package reference to your project `.csproj` file. For more installation methods refer to the package NuGet site.
 
-    <PackageReference Include="prosmart.CoreMailer" Version="1.0.0" />
+    <PackageReference Include="Prosmart.CoreMailer" Version="1.0.0" />
 
 ### Usage
 
