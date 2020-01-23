@@ -7,7 +7,7 @@
     <Company>Prosmart</Company>
     <PackageProjectUrl>https://github.com/prosmartxyz/CoreMailer</PackageProjectUrl>
     <RepositoryUrl>https://github.com/prosmartxyz/CoreMailer</RepositoryUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <PackageId>Prosmart.CoreMailer</PackageId>
     <Product>Prosmart.CoreMailer</Product>
@@ -15,6 +15,7 @@
     <Copyright>Prosmart 2020</Copyright>
     <PackageTags>ASPNET.Core Mailer MVC mailer mailer .NETCoreMailer EmailSender prosmartxyz</PackageTags>
     <PackageReleaseNotes>Based on Riyasat CoreMailer, this project send emails from within ASPNET.Core 3.1 or above with razor templates.</PackageReleaseNotes>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
