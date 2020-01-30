@@ -21,7 +21,7 @@ namespace CoreMailer.Models
 		[Required(ErrorMessage = "Sender email address is required")]
 		[EmailAddress(ErrorMessage = "Please enter valid sender email")]
 		public string FromAddress { get; set; }
-		[Required(ErrorMessage = "Reciver email address is require")]
+		[Required(ErrorMessage = "Receiver email address is require")]
 		public IList<string> ToAddresses { get; set; }
 
 		internal string To => string.Join(",", ToAddresses);
