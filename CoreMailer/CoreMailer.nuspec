@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Prosmart.CoreMailer</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>prosmartxyz, Daniel Díaz</authors>
     <owners>prosmartxyz</owners>
     <projectUrl>http://www.github.com/prosmartxyz/CoreMailer</projectUrl>

@@ -48,9 +48,10 @@ Create a `cshtml` template under any views folder e.g.
 This template will be associated to a model so we can change values dynamically.
 
 **The content of `cshtml` can be**
-
+```csharp
     @model UserRegistrationInfo
     Hello <strong>@Model.UserName</strong> your email is <strong>@Model.Email</strong>
+```
 
 **NOTE: For emails you have to use inline styling.** This means that all CSS values must be inlined in your view file (or any HTML of some sort). For this task you can use [Foundation for Emails](https://foundation.zurb.com/emails/email-templates.html) or any web-based editor.
 
@@ -58,17 +59,21 @@ This template will be associated to a model so we can change values dynamically.
 Emails must be _send_ inside a controller action, plain old MVC. Our mailer service is properly registered in our `Startup.cs` so we can use built-in DI in any controller constructor like this:
 
 **Constructor**
-
+```csharp
     private readonly ICoreMvcMailer _mailer;
 
     public HomeController(ICoreMvcMailer mailer)
     {
       _mailer = mailer;
     }
+```
+
 
 **In ActionMethod**
-Now you can send emails inside any action, in this example we use the `SencAsync` method:
+Now you can send emails inside any action, in this example we use the `SendAsync` method:
 
+
+```csharp
     [AllowAnonymous]
     [HttpGet("users/notify")]
     public async Task<IActionResult> NotifyUser(string username, string email)
@@ -93,21 +98,25 @@ Now you can send emails inside any action, in this example we use the `SencAsync
         await _mailer.SendAsync(notifier);
         return View();
     }
-        
+```    
+
 
 **Local Folder Usage**
 
 It is really simple to use. Just create MVCMailer model with **pickup directory location**. When you send the email make sure you set sender and reciver email. Once done, you can see email in your provided pickup directory.
 
-            MailerModel notifier = new MailerModel(**"Your Directory Here"**)
-            {
-                FromAddress = "Your Address",
-                IsHtml = true,
-                User = "YourUserName",
-                Key ="YourKey",
-                ViewFile = "Emails/Register",
-                Subject = "Registration",
-                Model = newUser
-            };
-            notifier.ToAddresses.Add("test@test.com");
-            _mailer.Send(mdl);
+
+```csharp
+    MailerModel notifier = new MailerModel(**"Your Directory Here"**)
+    {
+        FromAddress = "Your Address",
+        IsHtml = true,
+        User = "YourUserName",
+        Key ="YourKey",
+        ViewFile = "Emails/Register",
+        Subject = "Registration",
+        Model = newUser
+    };
+    notifier.ToAddresses.Add("test@test.com");
+    _mailer.Send(mdl);
+```
