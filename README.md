@@ -11,7 +11,9 @@ Based on [Riyasat CoreMailer](https://www.nuget.org/packages/CoreMailer) project
 
 Add package reference to your project `.csproj` file. For more installation methods refer to the package NuGet site.
 
-    <PackageReference Include="Prosmart.CoreMailer" Version="1.0.0" />
+```xml
+<PackageReference Include="Prosmart.CoreMailer" Version="1.0.0" />
+```
 
 ### Usage
 
@@ -21,20 +23,24 @@ Add package reference to your project `.csproj` file. For more installation meth
 
 **REMEMBER** as per docs of NET Core 3.x, [MVC Registration](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.1&tabs=visual-studio#mvc-service-registration) had some changes. If you are using a Razor Page project or WebAPI-only **you must register controllers & views** in order to use this package. So, the final service registration section would be like this:
 
-    services.AddScoped<ITemplateRenderer, TemplateRenderer>();
-    services.AddScoped<ICoreMvcMailer, CoreMvcMailer>();
-    services.AddControllersWithViews();
+```csharp
+services.AddScoped<ITemplateRenderer, TemplateRenderer>();
+services.AddScoped<ICoreMvcMailer, CoreMvcMailer>();
+services.AddControllersWithViews();
+```
 
 You can use this MVC Registration alongside Razor Pages, read the docs provided to understand these changes.
 
 Then, register routes to this controllers in Startup Configure section.
 
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
-    });
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+```
 
 This is pretty straightforward and basic configuration for **controllers**, you can change this configuration as you need. Official docs are available [here](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.1&tabs=visual-studio#migrate-startupconfigure).
 
@@ -48,7 +54,7 @@ Create a `cshtml` template under any views folder e.g.
 This template will be associated to a model so we can change values dynamically.
 
 **The content of `cshtml` can be**
-```csharp
+```razor
     @model UserRegistrationInfo
     Hello <strong>@Model.UserName</strong> your email is <strong>@Model.Email</strong>
 ```
@@ -74,9 +80,9 @@ Now you can send emails inside any action, in this example we use the `SendAsync
 
 
 ```csharp
-    [AllowAnonymous]
-    [HttpGet("users/notify")]
-    public async Task<IActionResult> NotifyUser(string username, string email)
+[AllowAnonymous]
+[HttpGet("users/notify")]
+public async Task<IActionResult> NotifyUser(string username, string email)
     {
         UserRegistrationInfo newUser = new UserRegistrationInfo()
         {
@@ -98,7 +104,7 @@ Now you can send emails inside any action, in this example we use the `SendAsync
         await _mailer.SendAsync(notifier);
         return View();
     }
-```    
+```
 
 
 **Local Folder Usage**
